@@ -203,7 +203,7 @@ export default function DashboardPage() {
             <div className={`${styles.priceCard} glass-card-strong p-8 text-center opacity-0 animate-[fade-in-up_0.6s_ease-out_0.45s_forwards]`}>
               <p className="text-sm text-[#8A8F98] mb-1 uppercase tracking-wider font-medium">One-time payment</p>
               <div className="flex items-baseline justify-center gap-1 mb-2">
-                <span className="text-5xl font-extrabold gradient-text-static">₹299</span>
+                <span className="text-5xl font-extrabold gradient-text-static">₹5</span>
               </div>
               <p className="text-sm text-[#5A5F6B] mb-8">Pay once, own forever. No subscriptions.</p>
 
