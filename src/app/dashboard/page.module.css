@@ -1,0 +1,149 @@
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(108, 99, 255, 0.1);
+  border-top-color: #6C63FF;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ─── Badges ─── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.badgePro {
+  background: linear-gradient(135deg, rgba(108, 99, 255, 0.15), rgba(0, 212, 170, 0.15));
+  color: #00D4AA;
+  border: 1px solid rgba(0, 212, 170, 0.2);
+  animation: border-glow-green 2s ease-in-out infinite;
+}
+
+.badgeFree {
+  background: rgba(255, 255, 255, 0.04);
+  color: #8A8F98;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+@keyframes border-glow-green {
+  0%, 100% { border-color: rgba(0, 212, 170, 0.2); box-shadow: 0 0 8px rgba(0, 212, 170, 0); }
+  50% { border-color: rgba(0, 212, 170, 0.4); box-shadow: 0 0 12px rgba(0, 212, 170, 0.1); }
+}
+
+/* ─── Pro Card ─── */
+.proCard {
+  border: 1px solid rgba(0, 212, 170, 0.1);
+}
+
+.proIconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(108, 99, 255, 0.1), rgba(0, 212, 170, 0.1));
+  border: 1px solid rgba(108, 99, 255, 0.1);
+}
+
+/* ─── Pricing Table ─── */
+.pricingTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pricingTable th,
+.pricingTable td {
+  padding: 16px 24px;
+  text-align: center;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.pricingTable th {
+  background: rgba(255, 255, 255, 0.02);
+  color: #8A8F98;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 14px 24px;
+}
+
+.pricingTable td:first-child,
+.pricingTable th:first-child {
+  text-align: left;
+  color: #F1F1F4;
+}
+
+.pricingTable tbody tr {
+  transition: background 0.2s;
+}
+
+.pricingTable tbody tr:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.pricingTable tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.checkIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(34, 197, 94, 0.1);
+  color: #22C55E;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.crossIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(239, 68, 68, 0.06);
+  color: #5A5F6B;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* ─── Price Card ─── */
+.priceCard {
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid rgba(108, 99, 255, 0.12);
+  position: relative;
+  overflow: hidden;
+}
+
+.priceCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #6C63FF, #00D4AA, transparent);
+}
