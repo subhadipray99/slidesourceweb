@@ -238,3 +238,34 @@
   border: 1px solid rgba(239, 68, 68, 0.15);
   display: inline-block;
 }
+
+/* ─── Currency Switcher ─── */
+.currencySwitcher {
+  display: inline-flex;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 4px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  margin-bottom: 24px;
+}
+
+.currencyBtn {
+  padding: 8px 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #8A8F98;
+}
+
+.currencyBtnActive {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.currencyBtn:hover:not(.currencyBtnActive) {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.03);
+}

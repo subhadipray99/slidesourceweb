@@ -21,6 +21,15 @@ export default function DashboardPage() {
   const { user, isPro, trialStartedAt, proExpiresAt, loading, logout, refreshProStatus } = useAuth();
   const router = useRouter();
   const [timeLeft, setTimeLeft] = useState<number>(0);
+  const [selectedCurrency, setSelectedCurrency] = useState<"USD" | "INR">("USD");
+
+  // Pricing configuration
+  const prices = {
+    USD: { amount: 100, symbol: "$", value: "1" },
+    INR: { amount: 1900, symbol: "₹", value: "19" },
+  };
+
+  const currentPrice = prices[selectedCurrency];
 
   // Format expiration date
   const expirationDate = proExpiresAt ? new Date(proExpiresAt).toLocaleDateString('en-IN', {
@@ -256,9 +265,27 @@ export default function DashboardPage() {
               {trialExpired && (
                 <p className={styles.urgentLabel}>⚠️ Trial Expired — Upgrade Now</p>
               )}
+              
+              <div className={styles.currencySwitcher}>
+                <button
+                  onClick={() => setSelectedCurrency("USD")}
+                  className={`${styles.currencyBtn} ${selectedCurrency === "USD" ? styles.currencyBtnActive : ""}`}
+                >
+                  USD
+                </button>
+                <button
+                  onClick={() => setSelectedCurrency("INR")}
+                  className={`${styles.currencyBtn} ${selectedCurrency === "INR" ? styles.currencyBtnActive : ""}`}
+                >
+                  INR
+                </button>
+              </div>
+
               <p className="text-sm text-[#8A8F98] mb-1 uppercase tracking-wider font-medium">Monthly Subscription</p>
               <div className="flex items-baseline justify-center gap-1 mb-2">
-                <span className="text-5xl font-extrabold gradient-text-static">₹5</span>
+                <span className="text-5xl font-extrabold gradient-text-static">
+                  {currentPrice.symbol}{currentPrice.value}
+                </span>
                 <span className="text-[#5A5F6B] text-lg">/month</span>
               </div>
               <p className="text-sm text-[#5A5F6B] mb-8">Full access to all features for 30 days.</p>
@@ -266,6 +293,8 @@ export default function DashboardPage() {
               <RazorpayButton
                 uid={user.uid}
                 email={user.email || ""}
+                amount={currentPrice.amount}
+                currency={selectedCurrency}
                 onSuccess={() => refreshProStatus()}
               />
             </div>

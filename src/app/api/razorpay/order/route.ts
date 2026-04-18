@@ -5,10 +5,14 @@ export const dynamic = "force-dynamic";
 
 export async function POST(request: NextRequest) {
   try {
-    const { uid } = await request.json();
+    const { uid, amount, currency } = await request.json();
 
     if (!uid) {
       return Response.json({ error: "Missing uid" }, { status: 400 });
+    }
+
+    if (!amount || !currency) {
+      return Response.json({ error: "Missing amount or currency" }, { status: 400 });
     }
 
     const razorpay = new Razorpay({
@@ -17,8 +21,8 @@ export async function POST(request: NextRequest) {
     });
 
     const order = await razorpay.orders.create({
-      amount: 500, // ₹5 in paise
-      currency: "INR",
+      amount: amount, // Amount in smallest subunit (paise/cents)
+      currency: currency,
       notes: {
         uid,
       },

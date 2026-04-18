@@ -5,6 +5,8 @@ import { useState, useCallback } from "react";
 interface RazorpayButtonProps {
   uid: string;
   email: string;
+  amount: number;
+  currency: string;
   onSuccess: () => void;
 }
 
@@ -52,7 +54,7 @@ function loadRazorpayScript(): Promise<boolean> {
   });
 }
 
-export default function RazorpayButton({ uid, email, onSuccess }: RazorpayButtonProps) {
+export default function RazorpayButton({ uid, email, amount, currency, onSuccess }: RazorpayButtonProps) {
   const [isProcessing, setIsProcessing] = useState(false);
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
 
@@ -71,22 +73,22 @@ export default function RazorpayButton({ uid, email, onSuccess }: RazorpayButton
       const res = await fetch("/api/razorpay/order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ uid }),
+        body: JSON.stringify({ uid, amount, currency }),
       });
 
       if (!res.ok) {
         throw new Error("Failed to create order");
       }
 
-      const { orderId, amount, currency } = await res.json();
+      const { orderId, amount: resAmount, currency: resCurrency } = await res.json();
 
       // Open Razorpay checkout
       const options: RazorpayOptions = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
-        amount,
-        currency,
+        amount: resAmount,
+        currency: resCurrency,
         name: "SlideSource",
-        description: "SlideSource Pro — Lifetime Access",
+        description: "SlideSource Pro — Monthly Access",
         order_id: orderId,
         prefill: { email },
         notes: { uid },
@@ -112,7 +114,7 @@ export default function RazorpayButton({ uid, email, onSuccess }: RazorpayButton
       setStatus("error");
       setIsProcessing(false);
     }
-  }, [uid, email, onSuccess]);
+  }, [uid, email, amount, currency, onSuccess]);
 
   if (status === "success") {
     return (
@@ -145,6 +147,9 @@ export default function RazorpayButton({ uid, email, onSuccess }: RazorpayButton
     );
   }
 
+  const currencySymbol = currency === "USD" ? "$" : "₹";
+  const displayAmount = currency === "USD" ? amount / 100 : amount / 100;
+
   return (
     <button
       onClick={handlePayment}
@@ -164,7 +169,7 @@ export default function RazorpayButton({ uid, email, onSuccess }: RazorpayButton
             <line x1="12" y1="19" x2="12" y2="23" />
             <line x1="8" y1="23" x2="16" y2="23" />
           </svg>
-          Upgrade to Pro — ₹5
+          Upgrade for {currencySymbol}{displayAmount} Month
         </>
       )}
     </button>
