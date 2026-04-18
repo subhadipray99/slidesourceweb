@@ -28,6 +28,7 @@ interface RazorpayOptions {
   theme: { color: string };
   handler: (response: RazorpayResponse) => void;
   modal?: { ondismiss?: () => void };
+  config?: any;
 }
 
 interface RazorpayInstance {
@@ -105,6 +106,28 @@ export default function RazorpayButton({ uid, email, amount, currency, onSuccess
             setIsProcessing(false);
           },
         },
+        // Restrict USD payments to PayPal only
+        ...(currency === "USD" && {
+          config: {
+            display: {
+              preferences: {
+                show_default_blocks: false,
+              },
+              sequence: ["block.paypal"],
+              blocks: {
+                paypal: {
+                  name: "Pay via PayPal",
+                  instruments: [
+                    {
+                      method: "wallet",
+                      wallets: ["paypal"],
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        }),
       };
 
       const razorpay = new window.Razorpay(options);
