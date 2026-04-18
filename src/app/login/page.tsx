@@ -36,7 +36,7 @@ export default function LoginPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#06060E]">
+      <div className="min-h-screen flex items-center justify-center bg-[#000000]">
         <div className={styles.spinner} />
       </div>
     );
@@ -46,38 +46,35 @@ export default function LoginPage() {
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden grid-pattern px-6">
-      <div className="orb orb-1" />
-      <div className="orb orb-2" />
-
       <Link
         href="/"
-        className="fixed top-6 left-6 z-50 flex items-center gap-2 text-sm text-[#8A8F98] hover:text-white transition-colors"
+        className="fixed top-8 left-8 z-50 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-[#555555] hover:text-[#FFD700] transition-colors"
       >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
           <path d="M19 12H5M12 19l-7-7 7-7" />
         </svg>
-        Back
+        Go Home
       </Link>
 
-      <div className={`${styles.authCard} glass-card-strong opacity-0 animate-[fade-in-up_0.6s_ease-out_forwards]`}>
+      <div className={`${styles.authCard} glass-card-strong opacity-0 animate-[fade-in-up_0.5s_ease-out_forwards]`}>
         {/* Logo */}
-        <div className="flex flex-col items-center mb-10">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#6C63FF] to-[#00D4AA] flex items-center justify-center text-white font-bold text-2xl mb-5 shadow-lg shadow-[#6C63FF]/20">
+        <div className="flex flex-col items-center mb-12">
+          <div className="w-20 h-20 rounded-2xl bg-[#FFD700] flex items-center justify-center text-black font-black text-3xl mb-6 shadow-2xl shadow-[#FFD700]/10">
             S
           </div>
-          <h1 className="text-2xl font-bold tracking-tight">Welcome to SlideSource</h1>
-          <p className="text-[#8A8F98] text-sm mt-2 text-center leading-relaxed">
-            Sign in to manage your subscription<br />and unlock Pro features.
+          <h1 className="text-3xl font-black tracking-tighter uppercase italic text-center">SlideSource</h1>
+          <p className="text-[#555555] text-[10px] font-bold uppercase tracking-widest mt-3 text-center leading-relaxed">
+            Authentication Required<br />Manage your Android Pro sessions.
           </p>
         </div>
 
         {/* Error */}
         {error && (
           <div className={styles.errorBanner}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="12" cy="12" r="10" />
-              <line x1="15" y1="9" x2="9" y2="15" />
-              <line x1="9" y1="9" x2="15" y2="15" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
             </svg>
             {error}
           </div>
@@ -91,7 +88,7 @@ export default function LoginPage() {
           id="google-signin-btn"
         >
           {isGoogleLoading ? (
-            <div className={styles.spinnerSmall} style={{ borderTopColor: "#4285F4" }} />
+            <div className={styles.spinnerSmall} />
           ) : (
             <svg width="20" height="20" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
               <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
@@ -101,12 +98,12 @@ export default function LoginPage() {
               <path fill="none" d="M0 0h48v48H0z"/>
             </svg>
           )}
-          <span>{isGoogleLoading ? "Signing in..." : "Continue with Google"}</span>
+          <span>{isGoogleLoading ? "PROCESSSING..." : "CONTINUE WITH GOOGLE"}</span>
         </button>
 
         <p className={styles.termsText}>
-          By continuing, you agree to our Terms of Service.<br />
-          Your account syncs automatically with the SlideSource Android app.
+          Your unified account for web and mobile.<br />
+          Syncs with SlideSource Android Pro.
         </p>
       </div>
     </div>

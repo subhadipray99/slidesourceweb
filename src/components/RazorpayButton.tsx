@@ -154,22 +154,19 @@ export default function RazorpayButton({ uid, email, amount, currency, onSuccess
     <button
       onClick={handlePayment}
       disabled={isProcessing}
-      className={`btn-primary !px-10 !py-4 !text-base !rounded-2xl ${isProcessing ? "opacity-60 pointer-events-none" : ""}`}
+      className={`btn-primary !w-full !py-4 !text-xs !rounded-lg ${isProcessing ? "opacity-60 pointer-events-none" : ""}`}
     >
       {isProcessing ? (
         <span className="flex items-center gap-2">
-          <span className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
-          Processing...
+          <span className="w-4 h-4 border-2 border-black/20 border-t-black rounded-full animate-spin" />
+          AUTHENTICATING...
         </span>
       ) : (
         <>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
-            <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-            <line x1="12" y1="19" x2="12" y2="23" />
-            <line x1="8" y1="23" x2="16" y2="23" />
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
           </svg>
-          Upgrade for {currencySymbol}{displayAmount} Month
+          UPGRADE FOR {currencySymbol}{displayAmount} / MONTH
         </>
       )}
     </button>

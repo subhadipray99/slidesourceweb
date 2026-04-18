@@ -1,271 +1,74 @@
 .spinner {
-  width: 32px;
-  height: 32px;
-  border: 3px solid rgba(108, 99, 255, 0.1);
-  border-top-color: #6C63FF;
+  width: 24px;
+  height: 24px;
+  border: 4px solid #111111;
+  border-top-color: #FFD700;
   border-radius: 50%;
-  animation: spin 0.7s linear infinite;
+  animation: spin 0.6s linear infinite;
 }
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+  to { transform: rotate(360deg); }
 }
 
-/* ─── Badges ─── */
-.badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-.badgePro {
-  background: linear-gradient(135deg, rgba(108, 99, 255, 0.15), rgba(0, 212, 170, 0.15));
-  color: #00D4AA;
-  border: 1px solid rgba(0, 212, 170, 0.2);
-  animation: border-glow-green 2s ease-in-out infinite;
-}
-
-.badgeFree {
-  background: rgba(255, 255, 255, 0.04);
-  color: #8A8F98;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-@keyframes border-glow-green {
-  0%, 100% { border-color: rgba(0, 212, 170, 0.2); box-shadow: 0 0 8px rgba(0, 212, 170, 0); }
-  50% { border-color: rgba(0, 212, 170, 0.4); box-shadow: 0 0 12px rgba(0, 212, 170, 0.1); }
-}
-
-/* ─── Pro Card ─── */
-.proCard {
-  border: 1px solid rgba(0, 212, 170, 0.1);
-}
-
-.proIconWrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 80px;
-  height: 80px;
-  margin: 0 auto;
-  border-radius: 24px;
-  background: linear-gradient(135deg, rgba(108, 99, 255, 0.1), rgba(0, 212, 170, 0.1));
-  border: 1px solid rgba(108, 99, 255, 0.1);
-}
-
-/* ─── Pricing Table ─── */
-.pricingTable {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.pricingTable th,
-.pricingTable td {
-  padding: 16px 24px;
-  text-align: center;
-  font-size: 14px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-}
-
-.pricingTable th {
-  background: rgba(255, 255, 255, 0.02);
-  color: #8A8F98;
-  font-weight: 600;
+/* ─── Navigation ─── */
+.navItem {
+  padding: 8px 16px;
   font-size: 13px;
+  font-weight: 800;
+  color: #555555;
+  border-radius: 8px;
+  transition: all 0.2s;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  padding: 14px 24px;
 }
 
-.pricingTable td:first-child,
-.pricingTable th:first-child {
-  text-align: left;
-  color: #F1F1F4;
+.navItem:hover {
+  color: #FFFFFF;
 }
 
-.pricingTable tbody tr {
-  transition: background 0.2s;
-}
-
-.pricingTable tbody tr:hover {
-  background: rgba(255, 255, 255, 0.02);
-}
-
-.pricingTable tbody tr:last-child td {
-  border-bottom: none;
-}
-
-.checkIcon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: rgba(34, 197, 94, 0.1);
-  color: #22C55E;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.crossIcon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: rgba(239, 68, 68, 0.06);
-  color: #5A5F6B;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-/* ─── Price Card ─── */
-.priceCard {
-  max-width: 420px;
-  margin-left: auto;
-  margin-right: auto;
-  border: 1px solid rgba(108, 99, 255, 0.12);
-  position: relative;
-  overflow: hidden;
-}
-
-.priceCard::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #6C63FF, #00D4AA, transparent);
-}
-
-/* ─── Trial Badge ─── */
-.badgeTrial {
-  background: rgba(251, 191, 36, 0.10);
-  color: #FBBF24;
-  border: 1px solid rgba(251, 191, 36, 0.2);
-  animation: border-glow-amber 2s ease-in-out infinite;
-}
-
-@keyframes border-glow-amber {
-  0%, 100% { border-color: rgba(251, 191, 36, 0.2); box-shadow: 0 0 8px rgba(251, 191, 36, 0); }
-  50% { border-color: rgba(251, 191, 36, 0.45); box-shadow: 0 0 14px rgba(251, 191, 36, 0.12); }
+.navItemActive {
+  background: #000000;
+  color: #FFD700;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
 }
 
 /* ─── Trial Banner ─── */
 .trialBanner {
-  position: relative;
-  z-index: 20;
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 14px 24px;
-  background: linear-gradient(90deg, rgba(251, 191, 36, 0.08), rgba(251, 191, 36, 0.04));
-  border-bottom: 1px solid rgba(251, 191, 36, 0.15);
-  font-size: 14px;
-}
-
-.trialBannerIcon {
-  font-size: 18px;
-  flex-shrink: 0;
-}
-
-.trialBannerText {
-  color: #FBBF24;
-  font-weight: 600;
-}
-
-.trialBannerSub {
-  color: #8A8F98;
+  justify-content: space-between;
+  padding: 12px 24px;
+  background: #FFD700;
+  color: #000000;
 }
 
 .trialCountdown {
-  margin-left: auto;
   font-family: 'Courier New', monospace;
-  font-size: 20px;
-  font-weight: 700;
-  color: #FBBF24;
-  letter-spacing: 0.06em;
-  background: rgba(251, 191, 36, 0.08);
-  padding: 6px 14px;
-  border-radius: 10px;
-  border: 1px solid rgba(251, 191, 36, 0.15);
-  flex-shrink: 0;
-}
-
-/* ─── Expired Banner ─── */
-.expiredBanner {
-  position: relative;
-  z-index: 20;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 14px 24px;
-  background: linear-gradient(90deg, rgba(239, 68, 68, 0.08), rgba(239, 68, 68, 0.04));
-  border-bottom: 1px solid rgba(239, 68, 68, 0.15);
-  font-size: 14px;
-  color: #EF4444;
-  font-weight: 500;
-}
-
-/* ─── Urgent Price Card ─── */
-.priceCardUrgent {
-  border-color: rgba(239, 68, 68, 0.25) !important;
-  box-shadow: 0 0 30px rgba(239, 68, 68, 0.06);
-}
-
-.priceCardUrgent::before {
-  background: linear-gradient(90deg, transparent, #EF4444, #F97316, transparent) !important;
-}
-
-.urgentLabel {
-  font-size: 13px;
-  font-weight: 700;
-  color: #EF4444;
-  margin-bottom: 16px;
-  padding: 8px 16px;
-  border-radius: 8px;
-  background: rgba(239, 68, 68, 0.08);
-  border: 1px solid rgba(239, 68, 68, 0.15);
-  display: inline-block;
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 0.05em;
 }
 
 /* ─── Currency Switcher ─── */
 .currencySwitcher {
   display: inline-flex;
-  background: rgba(255, 255, 255, 0.03);
-  padding: 4px;
-  border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: #111111;
+  padding: 3px;
+  border-radius: 8px;
   margin-bottom: 24px;
 }
 
 .currencyBtn {
-  padding: 8px 20px;
-  border-radius: 10px;
-  font-size: 13px;
-  font-weight: 600;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  color: #8A8F98;
+  padding: 6px 16px;
+  font-size: 11px;
+  font-weight: 900;
+  color: #555555;
+  border-radius: 6px;
+  transition: all 0.2s;
 }
 
 .currencyBtnActive {
-  background: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.currencyBtn:hover:not(.currencyBtnActive) {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.03);
+  background: #000000;
+  color: #FFD700;
 }
