@@ -4,14 +4,14 @@ export default function Home() {
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden grid-pattern">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-12 py-6 bg-black/50 backdrop-blur-md">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-[#FFD700] flex items-center justify-center text-black font-black text-xl">
+      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 md:px-12 py-4 md:py-6 bg-black/50 backdrop-blur-md border-b border-[#111111]">
+        <div className="flex items-center gap-2 md:gap-3">
+          <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-[#FFD700] flex items-center justify-center text-black font-black text-lg md:text-xl">
             S
           </div>
-          <span className="text-xl font-black tracking-tighter uppercase italic">SlideSource</span>
+          <span className="text-lg md:text-xl font-black tracking-tighter uppercase italic truncate max-w-[120px] sm:max-w-none">SlideSource</span>
         </div>
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-3 sm:gap-6">
           <Link
             href="/login"
             className="text-[10px] font-black uppercase tracking-[0.2em] text-[#555555] hover:text-[#FFD700] transition-colors"
@@ -20,7 +20,7 @@ export default function Home() {
           </Link>
           <Link
             href="/login"
-            className="btn-primary !py-2 !px-6 !text-[10px] !rounded-lg"
+            className="btn-primary !py-2 !px-4 sm:!px-6 !text-[10px] !rounded-lg"
           >
             Get Started
           </Link>

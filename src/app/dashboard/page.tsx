@@ -81,12 +81,12 @@ export default function DashboardPage() {
   return (
     <div className="relative min-h-screen overflow-hidden grid-pattern">
       {/* Top bar */}
-      <header className="relative z-20 flex items-center justify-between px-6 md:px-12 py-5 border-b border-[#222222] bg-black/50 backdrop-blur-md">
-        <div className="flex items-center gap-4">
-          <div className="w-10 h-10 rounded-lg bg-[#FFD700] flex items-center justify-center text-black font-black text-xl">
+      <header className="relative z-20 flex items-center justify-between px-4 md:px-12 py-3 md:py-5 border-b border-[#222222] bg-black/50 backdrop-blur-md">
+        <div className="flex items-center gap-2 md:gap-4">
+          <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-[#FFD700] flex items-center justify-center text-black font-black text-lg md:text-xl">
             S
           </div>
-          <span className="text-xl font-black tracking-tighter uppercase italic">SlideSource</span>
+          <span className="text-lg md:text-xl font-black tracking-tighter uppercase italic truncate max-w-[120px] sm:max-w-none">SlideSource</span>
         </div>
 
         <nav className="hidden md:flex items-center gap-1 bg-[#111111] p-1 rounded-xl border border-[#222222]">
@@ -106,7 +106,7 @@ export default function DashboardPage() {
 
         <button
           onClick={logout}
-          className="text-sm font-bold text-[#888888] hover:text-[#FFD700] transition-colors"
+          className="text-xs font-bold text-[#888888] hover:text-[#FFD700] transition-colors tracking-widest"
         >
           LOGOUT
         </button>
