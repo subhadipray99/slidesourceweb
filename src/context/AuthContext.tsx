@@ -5,6 +5,8 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
   signOut,
   type User,
 } from "firebase/auth";
@@ -18,6 +20,7 @@ interface AuthContextType {
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
   signup: (email: string, password: string) => Promise<void>;
+  loginWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
   refreshProStatus: () => Promise<void>;
 }
@@ -39,7 +42,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setIsPro(data?.isPro === true);
         setTrialStartedAt(data?.trialStartedAt ?? null);
       } else {
-        // Create user document if it doesn't exist
+        // New user — create document with exact structure the Android app expects
         const now = Date.now();
         await setDoc(doc(db, "users", uid), {
           isPro: false,
@@ -61,6 +64,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
+    // Firebase handles session persistence automatically; just listen for changes
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       setUser(firebaseUser);
       if (firebaseUser) {
@@ -84,13 +88,38 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (!auth || !db) throw new Error("Firebase not initialized");
     const credential = await createUserWithEmailAndPassword(auth, email, password);
     const now = Date.now();
+    // Use exact field names the Android app reads
     await setDoc(doc(db, "users", credential.user.uid), {
+      email: credential.user.email,
       isPro: false,
-      email: email,
-      createdAt: new Date().toISOString(),
       trialStartedAt: now,
     });
     setTrialStartedAt(now);
+  };
+
+  const loginWithGoogle = async () => {
+    if (!auth || !db) throw new Error("Firebase not initialized");
+    const provider = new GoogleAuthProvider();
+    const credential = await signInWithPopup(auth, provider);
+    const firebaseUser = credential.user;
+
+    // Only create doc if this user doesn't already have one
+    // This prevents overwriting isPro: true for existing users
+    const userRef = doc(db, "users", firebaseUser.uid);
+    const existing = await getDoc(userRef);
+    if (!existing.exists()) {
+      const now = Date.now();
+      await setDoc(userRef, {
+        email: firebaseUser.email,
+        isPro: false,
+        trialStartedAt: now,
+      });
+      setTrialStartedAt(now);
+    } else {
+      const data = existing.data();
+      setIsPro(data?.isPro === true);
+      setTrialStartedAt(data?.trialStartedAt ?? null);
+    }
   };
 
   const logout = async () => {
@@ -108,7 +137,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, isPro, trialStartedAt, loading, login, signup, logout, refreshProStatus }}
+      value={{ user, isPro, trialStartedAt, loading, login, signup, loginWithGoogle, logout, refreshProStatus }}
     >
       {children}
     </AuthContext.Provider>
