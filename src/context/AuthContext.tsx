@@ -3,8 +3,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import {
   onAuthStateChanged,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
   signOut,
@@ -17,9 +15,8 @@ interface AuthContextType {
   user: User | null;
   isPro: boolean;
   trialStartedAt: number | null;
+  proExpiresAt: number | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  signup: (email: string, password: string) => Promise<void>;
   loginWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
   refreshProStatus: () => Promise<void>;
@@ -31,6 +28,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isPro, setIsPro] = useState(false);
   const [trialStartedAt, setTrialStartedAt] = useState<number | null>(null);
+  const [proExpiresAt, setProExpiresAt] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
 
   const fetchProStatus = async (uid: string) => {
@@ -41,8 +39,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const data = userDoc.data();
         setIsPro(data?.isPro === true);
         setTrialStartedAt(data?.trialStartedAt ?? null);
+        setProExpiresAt(data?.proExpiresAt ?? null);
       } else {
-        // New user — create document with exact structure the Android app expects
         const now = Date.now();
         await setDoc(doc(db, "users", uid), {
           isPro: false,
@@ -51,6 +49,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         });
         setIsPro(false);
         setTrialStartedAt(now);
+        setProExpiresAt(null);
       }
     } catch (error) {
       console.error("Error fetching pro status:", error);
@@ -63,8 +62,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setLoading(false);
       return;
     }
-
-    // Firebase handles session persistence automatically; just listen for changes
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       setUser(firebaseUser);
       if (firebaseUser) {
@@ -72,30 +69,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       } else {
         setIsPro(false);
         setTrialStartedAt(null);
+        setProExpiresAt(null);
       }
       setLoading(false);
     });
-
     return () => unsubscribe();
   }, []);
-
-  const login = async (email: string, password: string) => {
-    if (!auth) throw new Error("Firebase not initialized");
-    await signInWithEmailAndPassword(auth, email, password);
-  };
-
-  const signup = async (email: string, password: string) => {
-    if (!auth || !db) throw new Error("Firebase not initialized");
-    const credential = await createUserWithEmailAndPassword(auth, email, password);
-    const now = Date.now();
-    // Use exact field names the Android app reads
-    await setDoc(doc(db, "users", credential.user.uid), {
-      email: credential.user.email,
-      isPro: false,
-      trialStartedAt: now,
-    });
-    setTrialStartedAt(now);
-  };
 
   const loginWithGoogle = async () => {
     if (!auth || !db) throw new Error("Firebase not initialized");
@@ -103,8 +82,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const credential = await signInWithPopup(auth, provider);
     const firebaseUser = credential.user;
 
-    // Only create doc if this user doesn't already have one
-    // This prevents overwriting isPro: true for existing users
     const userRef = doc(db, "users", firebaseUser.uid);
     const existing = await getDoc(userRef);
     if (!existing.exists()) {
@@ -115,10 +92,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         trialStartedAt: now,
       });
       setTrialStartedAt(now);
+      setProExpiresAt(null);
     } else {
       const data = existing.data();
       setIsPro(data?.isPro === true);
       setTrialStartedAt(data?.trialStartedAt ?? null);
+      setProExpiresAt(data?.proExpiresAt ?? null);
     }
   };
 
@@ -127,17 +106,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     await signOut(auth);
     setIsPro(false);
     setTrialStartedAt(null);
+    setProExpiresAt(null);
   };
 
   const refreshProStatus = async () => {
-    if (user) {
-      await fetchProStatus(user.uid);
-    }
+    if (user) await fetchProStatus(user.uid);
   };
 
   return (
     <AuthContext.Provider
-      value={{ user, isPro, trialStartedAt, loading, login, signup, loginWithGoogle, logout, refreshProStatus }}
+      value={{ user, isPro, trialStartedAt, proExpiresAt, loading, loginWithGoogle, logout, refreshProStatus }}
     >
       {children}
     </AuthContext.Provider>

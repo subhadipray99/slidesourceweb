@@ -39,10 +39,14 @@ export async function POST(request: NextRequest) {
 
       // Update user document in Firestore
       const adminDb = getAdminDb();
+      const thirtyDaysInMs = 30 * 24 * 60 * 60 * 1000;
+      const proExpiresAt = Date.now() + thirtyDaysInMs;
+
       await adminDb.collection("users").doc(uid).set(
         {
           isPro: true,
           upgradedAt: FieldValue.serverTimestamp(),
+          proExpiresAt: proExpiresAt,
           razorpayPaymentId: payment.id,
           razorpayOrderId: payment.order_id,
         },

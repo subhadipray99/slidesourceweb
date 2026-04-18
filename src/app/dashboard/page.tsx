@@ -18,9 +18,16 @@ function formatCountdown(ms: number): string {
 }
 
 export default function DashboardPage() {
-  const { user, isPro, trialStartedAt, loading, logout, refreshProStatus } = useAuth();
+  const { user, isPro, trialStartedAt, proExpiresAt, loading, logout, refreshProStatus } = useAuth();
   const router = useRouter();
   const [timeLeft, setTimeLeft] = useState<number>(0);
+
+  // Format expiration date
+  const expirationDate = proExpiresAt ? new Date(proExpiresAt).toLocaleDateString('en-IN', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  }) : '';
 
   // Compute trial state
   const trialActive =
@@ -175,10 +182,21 @@ export default function DashboardPage() {
             <h3 className="text-2xl font-bold mt-6 mb-3">
               You&apos;re a <span className="gradient-text-static">Pro</span>!
             </h3>
-            <p className="text-[#8A8F98] max-w-md mx-auto leading-relaxed">
+            <p className="text-[#8A8F98] max-w-md mx-auto leading-relaxed mb-6">
               You have full access to all SlideSource features. Enjoy mirror mode, camera overlay,
               custom speed controls, and a watermark-free experience on your Android device.
             </p>
+            {proExpiresAt && (
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/[0.03] border border-white/[0.06] text-sm text-[#8A8F98]">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                  <line x1="16" y1="2" x2="16" y2="6" />
+                  <line x1="8" y1="2" x2="8" y2="6" />
+                  <line x1="3" y1="10" x2="21" y2="10" />
+                </svg>
+                Pro access expires on: <span className="text-white font-medium ml-1">{expirationDate}</span>
+              </div>
+            )}
           </div>
         ) : (
           /* Pricing section for free/trial/expired users */
@@ -188,8 +206,8 @@ export default function DashboardPage() {
             </h3>
             <p className="text-[#8A8F98] mb-8 opacity-0 animate-[fade-in-up_0.6s_ease-out_0.25s_forwards]">
               {trialExpired
-                ? "Your trial has ended. Get permanent access with a one-time payment."
-                : "Unlock every feature with a one-time payment. No subscriptions."}
+                ? "Your trial has ended. Get 30 days of full access with a simple monthly payment."
+                : "Unlock every feature. Monthly subscription for unlimited creativity."}
             </p>
 
             {/* Feature comparison */}
@@ -231,18 +249,19 @@ export default function DashboardPage() {
               </table>
             </div>
 
-            {/* Price Card — more prominent when trial expired */}
+            {/* Price Card */}
             <div
               className={`${styles.priceCard} ${trialExpired ? styles.priceCardUrgent : ""} glass-card-strong p-8 text-center opacity-0 animate-[fade-in-up_0.6s_ease-out_0.45s_forwards]`}
             >
               {trialExpired && (
                 <p className={styles.urgentLabel}>⚠️ Trial Expired — Upgrade Now</p>
               )}
-              <p className="text-sm text-[#8A8F98] mb-1 uppercase tracking-wider font-medium">One-time payment</p>
+              <p className="text-sm text-[#8A8F98] mb-1 uppercase tracking-wider font-medium">Monthly Subscription</p>
               <div className="flex items-baseline justify-center gap-1 mb-2">
                 <span className="text-5xl font-extrabold gradient-text-static">₹5</span>
+                <span className="text-[#5A5F6B] text-lg">/month</span>
               </div>
-              <p className="text-sm text-[#5A5F6B] mb-8">Pay once, own forever. No subscriptions.</p>
+              <p className="text-sm text-[#5A5F6B] mb-8">Full access to all features for 30 days.</p>
 
               <RazorpayButton
                 uid={user.uid}
