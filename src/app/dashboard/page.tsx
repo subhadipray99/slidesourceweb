@@ -1,20 +1,55 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import RazorpayButton from "@/components/RazorpayButton";
 import styles from "./page.module.css";
 
+const TRIAL_DURATION_MS = 86400000; // 24 hours
+
+function formatCountdown(ms: number): string {
+  if (ms <= 0) return "00:00:00";
+  const totalSeconds = Math.floor(ms / 1000);
+  const h = Math.floor(totalSeconds / 3600);
+  const m = Math.floor((totalSeconds % 3600) / 60);
+  const s = totalSeconds % 60;
+  return [h, m, s].map((v) => String(v).padStart(2, "0")).join(":");
+}
+
 export default function DashboardPage() {
-  const { user, isPro, loading, logout, refreshProStatus } = useAuth();
+  const { user, isPro, trialStartedAt, loading, logout, refreshProStatus } = useAuth();
   const router = useRouter();
+  const [timeLeft, setTimeLeft] = useState<number>(0);
+
+  // Compute trial state
+  const trialActive =
+    !isPro && trialStartedAt !== null && Date.now() - trialStartedAt < TRIAL_DURATION_MS;
+  const trialExpired =
+    !isPro && trialStartedAt !== null && Date.now() - trialStartedAt >= TRIAL_DURATION_MS;
+
+  const computeTimeLeft = useCallback(() => {
+    if (!trialStartedAt) return 0;
+    return Math.max(0, trialStartedAt + TRIAL_DURATION_MS - Date.now());
+  }, [trialStartedAt]);
 
   useEffect(() => {
     if (!loading && !user) {
       router.push("/login");
     }
   }, [user, loading, router]);
+
+  // Live countdown
+  useEffect(() => {
+    if (!trialActive) return;
+    setTimeLeft(computeTimeLeft());
+    const interval = setInterval(() => {
+      const left = computeTimeLeft();
+      setTimeLeft(left);
+      if (left <= 0) clearInterval(interval);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [trialActive, computeTimeLeft]);
 
   if (loading) {
     return (
@@ -60,6 +95,31 @@ export default function DashboardPage() {
         </div>
       </header>
 
+      {/* Trial banner */}
+      {trialActive && (
+        <div className={styles.trialBanner}>
+          <span className={styles.trialBannerIcon}>⏳</span>
+          <div>
+            <span className={styles.trialBannerText}>
+              You are on your 24-hour free trial!
+            </span>
+            <span className={styles.trialBannerSub}>
+              {" "}Upgrade before it expires.
+            </span>
+          </div>
+          <div className={styles.trialCountdown}>
+            {formatCountdown(timeLeft)}
+          </div>
+        </div>
+      )}
+
+      {trialExpired && !isPro && (
+        <div className={styles.expiredBanner}>
+          <span>🔒</span>
+          <span>Your free trial has expired. Upgrade to continue using all Pro features.</span>
+        </div>
+      )}
+
       {/* Content */}
       <main className="relative z-10 max-w-5xl mx-auto px-6 py-12">
         {/* Status Card */}
@@ -71,16 +131,18 @@ export default function DashboardPage() {
                 <h2 className="text-3xl font-bold">
                   {isPro ? (
                     <span className="gradient-text-static">SlideSource Pro</span>
+                  ) : trialActive ? (
+                    <span>Free Trial</span>
                   ) : (
                     "Free Plan"
                   )}
                 </h2>
                 <span
                   className={`${styles.badge} ${
-                    isPro ? styles.badgePro : styles.badgeFree
+                    isPro ? styles.badgePro : trialActive ? styles.badgeTrial : styles.badgeFree
                   }`}
                 >
-                  {isPro ? "✦ PRO" : "FREE"}
+                  {isPro ? "✦ PRO" : trialActive ? "⏳ TRIAL" : "FREE"}
                 </span>
               </div>
             </div>
@@ -119,13 +181,15 @@ export default function DashboardPage() {
             </p>
           </div>
         ) : (
-          /* Pricing section for free users */
+          /* Pricing section for free/trial/expired users */
           <>
             <h3 className="text-2xl font-bold mb-2 opacity-0 animate-[fade-in-up_0.6s_ease-out_0.15s_forwards]">
               Upgrade to <span className="gradient-text-static">Pro</span>
             </h3>
             <p className="text-[#8A8F98] mb-8 opacity-0 animate-[fade-in-up_0.6s_ease-out_0.25s_forwards]">
-              Unlock every feature with a one-time payment. No subscriptions.
+              {trialExpired
+                ? "Your trial has ended. Get permanent access with a one-time payment."
+                : "Unlock every feature with a one-time payment. No subscriptions."}
             </p>
 
             {/* Feature comparison */}
@@ -141,66 +205,39 @@ export default function DashboardPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>Basic Teleprompter</td>
-                    <td>
-                      <span className={styles.checkIcon}>✓</span>
-                    </td>
-                    <td>
-                      <span className={styles.checkIcon}>✓</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Custom Speed Control</td>
-                    <td>
-                      <span className={styles.crossIcon}>✗</span>
-                    </td>
-                    <td>
-                      <span className={styles.checkIcon}>✓</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Mirror Mode</td>
-                    <td>
-                      <span className={styles.crossIcon}>✗</span>
-                    </td>
-                    <td>
-                      <span className={styles.checkIcon}>✓</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Camera Overlay</td>
-                    <td>
-                      <span className={styles.crossIcon}>✗</span>
-                    </td>
-                    <td>
-                      <span className={styles.checkIcon}>✓</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>No Watermark</td>
-                    <td>
-                      <span className={styles.crossIcon}>✗</span>
-                    </td>
-                    <td>
-                      <span className={styles.checkIcon}>✓</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Priority Support</td>
-                    <td>
-                      <span className={styles.crossIcon}>✗</span>
-                    </td>
-                    <td>
-                      <span className={styles.checkIcon}>✓</span>
-                    </td>
-                  </tr>
+                  {[
+                    ["Basic Teleprompter", true, true],
+                    ["Custom Speed Control", false, true],
+                    ["Mirror Mode", false, true],
+                    ["Camera Overlay", false, true],
+                    ["No Watermark", false, true],
+                    ["Priority Support", false, true],
+                  ].map(([feature, free, pro]) => (
+                    <tr key={String(feature)}>
+                      <td>{feature}</td>
+                      <td>
+                        <span className={free ? styles.checkIcon : styles.crossIcon}>
+                          {free ? "✓" : "✗"}
+                        </span>
+                      </td>
+                      <td>
+                        <span className={pro ? styles.checkIcon : styles.crossIcon}>
+                          {pro ? "✓" : "✗"}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
 
-            {/* Price Card */}
-            <div className={`${styles.priceCard} glass-card-strong p-8 text-center opacity-0 animate-[fade-in-up_0.6s_ease-out_0.45s_forwards]`}>
+            {/* Price Card — more prominent when trial expired */}
+            <div
+              className={`${styles.priceCard} ${trialExpired ? styles.priceCardUrgent : ""} glass-card-strong p-8 text-center opacity-0 animate-[fade-in-up_0.6s_ease-out_0.45s_forwards]`}
+            >
+              {trialExpired && (
+                <p className={styles.urgentLabel}>⚠️ Trial Expired — Upgrade Now</p>
+              )}
               <p className="text-sm text-[#8A8F98] mb-1 uppercase tracking-wider font-medium">One-time payment</p>
               <div className="flex items-baseline justify-center gap-1 mb-2">
                 <span className="text-5xl font-extrabold gradient-text-static">₹5</span>

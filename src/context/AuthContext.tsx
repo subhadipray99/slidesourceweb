@@ -14,6 +14,7 @@ import { auth, db } from "@/lib/firebase";
 interface AuthContextType {
   user: User | null;
   isPro: boolean;
+  trialStartedAt: number | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
   signup: (email: string, password: string) => Promise<void>;
@@ -26,6 +27,7 @@ const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isPro, setIsPro] = useState(false);
+  const [trialStartedAt, setTrialStartedAt] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
 
   const fetchProStatus = async (uid: string) => {
@@ -33,14 +35,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const userDoc = await getDoc(doc(db, "users", uid));
       if (userDoc.exists()) {
-        setIsPro(userDoc.data()?.isPro === true);
+        const data = userDoc.data();
+        setIsPro(data?.isPro === true);
+        setTrialStartedAt(data?.trialStartedAt ?? null);
       } else {
         // Create user document if it doesn't exist
+        const now = Date.now();
         await setDoc(doc(db, "users", uid), {
           isPro: false,
           createdAt: new Date().toISOString(),
+          trialStartedAt: now,
         });
         setIsPro(false);
+        setTrialStartedAt(now);
       }
     } catch (error) {
       console.error("Error fetching pro status:", error);
@@ -60,6 +67,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         await fetchProStatus(firebaseUser.uid);
       } else {
         setIsPro(false);
+        setTrialStartedAt(null);
       }
       setLoading(false);
     });
@@ -75,18 +83,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signup = async (email: string, password: string) => {
     if (!auth || !db) throw new Error("Firebase not initialized");
     const credential = await createUserWithEmailAndPassword(auth, email, password);
-    // Create user doc on signup
+    const now = Date.now();
     await setDoc(doc(db, "users", credential.user.uid), {
       isPro: false,
       email: email,
       createdAt: new Date().toISOString(),
+      trialStartedAt: now,
     });
+    setTrialStartedAt(now);
   };
 
   const logout = async () => {
     if (!auth) return;
     await signOut(auth);
     setIsPro(false);
+    setTrialStartedAt(null);
   };
 
   const refreshProStatus = async () => {
@@ -97,7 +108,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, isPro, loading, login, signup, logout, refreshProStatus }}
+      value={{ user, isPro, trialStartedAt, loading, login, signup, logout, refreshProStatus }}
     >
       {children}
     </AuthContext.Provider>
