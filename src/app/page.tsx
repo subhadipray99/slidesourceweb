@@ -50,7 +50,7 @@ export default function Home() {
           className="opacity-0 animate-[fade-in-up_0.5s_ease-out_0.2s_forwards] text-base md:text-lg text-[#888888] max-w-2xl mb-12 leading-relaxed font-medium"
         >
           Professional video recording with smooth scrolling,
-          mirror mode, camera overlay, and precise speed controls. 
+          360° Rotation, camera overlay, and precise speed controls.
           The only teleprompter you will ever need.
         </p>
 
@@ -96,9 +96,9 @@ export default function Home() {
 
           {/* Feature 3 */}
           <div className="glass-card p-10 opacity-0 animate-[fade-in-up_0.5s_ease-out_0.6s_forwards] border-l-4 border-l-[#FFD700]">
-            <h3 className="text-xl font-black uppercase mb-4 tracking-tight">Mirror Mode</h3>
+            <h3 className="text-xl font-black uppercase mb-4 tracking-tight">360° Rotation</h3>
             <p className="text-[#888888] text-sm leading-relaxed font-medium">
-              Flip your text for use with physical teleprompter glass. 
+              Flip your text for use with physical teleprompter glass.
               A professional studio setup simplified for mobile.
             </p>
           </div>

@@ -162,7 +162,7 @@ export default function DashboardPage() {
               <div className="glass-card-strong p-10 border-l-4 border-l-[#FFD700]">
                 <h3 className="text-2xl font-black mb-4">PREMIUM UNLOCKED</h3>
                 <p className="text-[#888888] leading-relaxed mb-8 max-w-lg">
-                  Your account is fully activated. All pro features including mirror mode, camera overlay,
+                  Your account is fully activated. All pro features including 360° Rotation, camera overlay,
                   and custom speeds are now available on your Android device.
                 </p>
                 {proExpiresAt && (
@@ -178,7 +178,7 @@ export default function DashboardPage() {
                   <ul className="space-y-4">
                     {[
                       "Custom Speed Control",
-                      "Mirror Mode",
+                      "360° Rotation",
                       "Camera Overlay",
                       "No Watermark",
                       "Priority Support"

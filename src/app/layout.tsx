@@ -12,7 +12,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "SlideSource — The Teleprompter, Perfected.",
   description:
-    "SlideSource is a premium teleprompter app for Android. Record professional videos with smooth scrolling scripts, mirror mode, camera overlay, and more.",
+    "SlideSource is a premium teleprompter app for Android. Record professional videos with smooth scrolling scripts, 360° Rotation, camera overlay, and more.",
   keywords: ["teleprompter", "android", "video recording", "slidesource", "prompter app"],
   openGraph: {
     title: "SlideSource — The Teleprompter, Perfected.",
