@@ -160,9 +160,9 @@ export default function DashboardPage() {
 
             {isPro ? (
               <div className="glass-card-strong p-10 border-l-4 border-l-[#FFD700]">
-                <h3 className="text-2xl font-black mb-4">LIFETIME ACCESS UNLOCKED</h3>
+                <h3 className="text-2xl font-black mb-4">PREMIUM UNLOCKED</h3>
                 <p className="text-[#888888] leading-relaxed mb-8 max-w-lg">
-                  Your account is fully activated. All pro features including mirror mode, camera overlay, 
+                  Your account is fully activated. All pro features including mirror mode, camera overlay,
                   and custom speeds are now available on your Android device.
                 </p>
                 {proExpiresAt && (
@@ -208,7 +208,7 @@ export default function DashboardPage() {
                       INR
                     </button>
                   </div>
-                  
+
                   <div className="mb-6">
                     <p className="text-[10px] font-bold text-[#555555] uppercase tracking-[0.2em] mb-1">Standard Plan</p>
                     <div className="flex items-baseline gap-1">
@@ -277,15 +277,15 @@ export default function DashboardPage() {
                 <div className="glass-card p-6 bg-[#FFD700]/5 border-[#FFD700]/10">
                   <p className="text-[10px] font-bold text-[#FFD700] uppercase tracking-widest mb-4">Need Help?</p>
                   <p className="text-xs text-[#888888] mb-6">Having issues with your subscription or the Android app?</p>
-                  <a 
-                    href="mailto:support@slidesource.me" 
+                  <a
+                    href="mailto:shuvodipray99@gmail.com"
                     className="btn-primary w-full !py-3 !text-xs"
                   >
                     Contact Support
                   </a>
                 </div>
 
-                <button 
+                <button
                   onClick={logout}
                   className="w-full py-4 text-xs font-black uppercase tracking-[0.2em] border border-[#FF4444] text-[#FF4444] rounded-lg hover:bg-[#FF4444] hover:text-white transition-all"
                 >
