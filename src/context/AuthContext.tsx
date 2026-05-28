@@ -37,9 +37,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const userDoc = await getDoc(doc(db, "users", uid));
       if (userDoc.exists()) {
         const data = userDoc.data();
-        setIsPro(data?.isPro === true);
+        const hasExpired = data?.proExpiresAt && Date.now() > data.proExpiresAt;
+        const isProActive = data?.isPro === true && !hasExpired;
+        setIsPro(isProActive);
         setTrialStartedAt(data?.trialStartedAt ?? null);
         setProExpiresAt(data?.proExpiresAt ?? null);
+
+        if (data?.isPro === true && hasExpired) {
+          try {
+            await setDoc(doc(db, "users", uid), { isPro: false }, { merge: true });
+          } catch (updateErr) {
+            console.error("Failed to auto-update expired Pro status in Firestore:", updateErr);
+          }
+        }
       } else {
         const now = Date.now();
         await setDoc(doc(db, "users", uid), {
@@ -95,9 +105,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setProExpiresAt(null);
     } else {
       const data = existing.data();
-      setIsPro(data?.isPro === true);
+      const hasExpired = data?.proExpiresAt && Date.now() > data.proExpiresAt;
+      const isProActive = data?.isPro === true && !hasExpired;
+      setIsPro(isProActive);
       setTrialStartedAt(data?.trialStartedAt ?? null);
       setProExpiresAt(data?.proExpiresAt ?? null);
+
+      if (data?.isPro === true && hasExpired) {
+        try {
+          await setDoc(userRef, { isPro: false }, { merge: true });
+        } catch (updateErr) {
+          console.error("Failed to auto-update expired Pro status in Firestore:", updateErr);
+        }
+      }
     }
   };
 
