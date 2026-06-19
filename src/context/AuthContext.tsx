@@ -14,6 +14,7 @@ import { auth, db } from "@/lib/firebase";
 interface AuthContextType {
   user: User | null;
   isPro: boolean;
+  isAdmin: boolean;
   trialStartedAt: number | null;
   proExpiresAt: number | null;
   loading: boolean;
@@ -27,11 +28,12 @@ const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isPro, setIsPro] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [trialStartedAt, setTrialStartedAt] = useState<number | null>(null);
   const [proExpiresAt, setProExpiresAt] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchProStatus = async (uid: string) => {
+  const fetchProStatus = async (uid: string, email?: string | null) => {
     if (!db) return;
     try {
       const userDoc = await getDoc(doc(db, "users", uid));
@@ -40,6 +42,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const hasExpired = data?.proExpiresAt && Date.now() > data.proExpiresAt;
         const isProActive = data?.isPro === true && !hasExpired;
         setIsPro(isProActive);
+        setIsAdmin(data?.isAdmin === true || data?.email === "shuvodipray99@gmail.com" || email === "shuvodipray99@gmail.com");
         setTrialStartedAt(data?.trialStartedAt ?? null);
         setProExpiresAt(data?.proExpiresAt ?? null);
 
@@ -58,12 +61,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           trialStartedAt: now,
         });
         setIsPro(false);
+        setIsAdmin(email === "shuvodipray99@gmail.com");
         setTrialStartedAt(now);
         setProExpiresAt(null);
       }
     } catch (error) {
       console.error("Error fetching pro status:", error);
       setIsPro(false);
+      setIsAdmin(false);
     }
   };
 
@@ -75,9 +80,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       setUser(firebaseUser);
       if (firebaseUser) {
-        await fetchProStatus(firebaseUser.uid);
+        await fetchProStatus(firebaseUser.uid, firebaseUser.email);
       } else {
         setIsPro(false);
+        setIsAdmin(false);
         setTrialStartedAt(null);
         setProExpiresAt(null);
       }
@@ -103,11 +109,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
       setTrialStartedAt(now);
       setProExpiresAt(null);
+      setIsAdmin(firebaseUser.email === "shuvodipray99@gmail.com");
     } else {
       const data = existing.data();
       const hasExpired = data?.proExpiresAt && Date.now() > data.proExpiresAt;
       const isProActive = data?.isPro === true && !hasExpired;
       setIsPro(isProActive);
+      setIsAdmin(data?.isAdmin === true || data?.email === "shuvodipray99@gmail.com" || firebaseUser.email === "shuvodipray99@gmail.com");
       setTrialStartedAt(data?.trialStartedAt ?? null);
       setProExpiresAt(data?.proExpiresAt ?? null);
 
@@ -125,17 +133,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (!auth) return;
     await signOut(auth);
     setIsPro(false);
+    setIsAdmin(false);
     setTrialStartedAt(null);
     setProExpiresAt(null);
   };
 
   const refreshProStatus = async () => {
-    if (user) await fetchProStatus(user.uid);
+    if (user) await fetchProStatus(user.uid, user.email);
   };
 
   return (
     <AuthContext.Provider
-      value={{ user, isPro, trialStartedAt, proExpiresAt, loading, loginWithGoogle, logout, refreshProStatus }}
+      value={{ user, isPro, isAdmin, trialStartedAt, proExpiresAt, loading, loginWithGoogle, logout, refreshProStatus }}
     >
       {children}
     </AuthContext.Provider>
