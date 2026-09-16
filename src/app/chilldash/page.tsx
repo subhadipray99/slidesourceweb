@@ -1,10 +1,33 @@
 import type { Metadata } from "next";
 import styles from "./page.module.css";
 
+const ogTitle = "Chill Dash — A little delivery, a little adventure";
+const ogDescription =
+  "Chill Dash is a cozy delivery-boy simulator about good routes, small adventures, and getting things delivered.";
+const ogImage = "/chilldash/og.png";
+
 export const metadata: Metadata = {
-  title: "Chill Dash — A little delivery, a little adventure",
-  description:
-    "Chill Dash is a cozy delivery-boy simulator about good routes, small adventures, and getting things delivered.",
+  title: ogTitle,
+  description: ogDescription,
+  openGraph: {
+    title: ogTitle,
+    description: ogDescription,
+    type: "website",
+    images: [
+      {
+        url: ogImage,
+        width: 1024,
+        height: 512,
+        alt: "Chill Dash — a delivery rider handing a food bag to a smiling customer",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: ogTitle,
+    description: ogDescription,
+    images: [ogImage],
+  },
 };
 
 const logo = "/chilldash/logo.png";
