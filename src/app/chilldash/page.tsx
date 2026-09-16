@@ -8,6 +8,7 @@ export const metadata: Metadata = {
 };
 
 const logo = "/chilldash/logo.png";
+const scooter = "/chilldash/scooter.png";
 const garageScreenshot =
   "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/screen_v1028_garage-OPl12aT1DSdJhCHDDU2mKkXAPhVXgO.png";
 const deliveryScreenshot =
@@ -19,7 +20,7 @@ export default function ChilldashPage() {
       <div className={styles.sun} aria-hidden="true" />
       <nav className={styles.nav} aria-label="Main navigation">
         <a className={styles.brand} href="#top" aria-label="Chill Dash home">
-          <img className={styles.brandMark} src={logo} alt="Chill Dash logo" />
+          <img className={styles.navMark} src={logo} alt="Chill Dash logo" />
           <span>chill dash<span className={styles.brandDot}>.</span></span>
         </a>
         <a className={styles.navLink} href="#waitlist">Join the ride <span aria-hidden="true">↗</span></a>
@@ -48,7 +49,7 @@ export default function ChilldashPage() {
         <div className={styles.road}>
           <div className={styles.roadLine} aria-hidden="true" />
           <div className={styles.scooter}>
-            <img src={logo} alt="Chill Dash scooter riding down the street" />
+            <img src={scooter} alt="Chill Dash delivery scooter riding down the street" />
             <span className={styles.exhaust} aria-hidden="true" />
             <span className={`${styles.exhaust} ${styles.exhaust2}`} aria-hidden="true" />
           </div>
