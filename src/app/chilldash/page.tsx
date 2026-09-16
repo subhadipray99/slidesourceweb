@@ -7,6 +7,7 @@ export const metadata: Metadata = {
     "Chill Dash is a cozy delivery-boy simulator about good routes, small adventures, and getting things delivered.",
 };
 
+const logo = "/chilldash/logo.png";
 const garageScreenshot =
   "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/screen_v1028_garage-OPl12aT1DSdJhCHDDU2mKkXAPhVXgO.png";
 const deliveryScreenshot =
@@ -18,7 +19,7 @@ export default function ChilldashPage() {
       <div className={styles.sun} aria-hidden="true" />
       <nav className={styles.nav} aria-label="Main navigation">
         <a className={styles.brand} href="#top" aria-label="Chill Dash home">
-          <span className={styles.brandMark}>CD</span>
+          <img className={styles.brandMark} src={logo} alt="Chill Dash logo" />
           <span>chill dash<span className={styles.brandDot}>.</span></span>
         </a>
         <a className={styles.navLink} href="#waitlist">Join the ride <span aria-hidden="true">↗</span></a>
@@ -40,6 +41,17 @@ export default function ChilldashPage() {
             <img src={garageScreenshot} alt="Chill Dash map screen showing the player garage and neighborhood" />
           </div>
           <div className={styles.routeCard}><span>●</span> Sunnyvale <strong>→</strong> home sweet garage</div>
+        </div>
+      </section>
+
+      <section className={styles.ride} aria-label="Scooter delivery animation">
+        <div className={styles.road}>
+          <div className={styles.roadLine} aria-hidden="true" />
+          <div className={styles.scooter}>
+            <img src={logo} alt="Chill Dash scooter riding down the street" />
+            <span className={styles.exhaust} aria-hidden="true" />
+            <span className={`${styles.exhaust} ${styles.exhaust2}`} aria-hidden="true" />
+          </div>
         </div>
       </section>
 
@@ -88,7 +100,7 @@ export default function ChilldashPage() {
       </section>
 
       <footer className={styles.footer}>
-        <a className={styles.brand} href="#top"><span className={styles.brandMark}>CD</span><span>chill dash<span className={styles.brandDot}>.</span></span></a>
+        <a className={styles.brand} href="#top"><img className={styles.brandMark} src={logo} alt="Chill Dash logo" /><span>chill dash<span className={styles.brandDot}>.</span></span></a>
         <p>made for sunny side streets · © 2026</p>
       </footer>
     </main>
