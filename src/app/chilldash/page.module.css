@@ -1,0 +1,58 @@
+.page {
+  --cream: #fff8e7;
+  --paper: #fffdf5;
+  --ink: #172127;
+  --muted: #738080;
+  --yellow: #ffc400;
+  --teal: #258d87;
+  --mint: #d8eee0;
+  min-height: 100vh;
+  overflow: hidden;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-geist-sans), Arial, sans-serif;
+}
+
+.nav, .hero, .story, .screens, .waitlist, .footer { width: min(1160px, calc(100% - 48px)); margin: 0 auto; }
+.nav { display: flex; justify-content: space-between; align-items: center; padding: 30px 0; position: relative; z-index: 2; }
+.brand { display: inline-flex; align-items: center; gap: 11px; color: var(--ink); text-decoration: none; font-size: 21px; font-weight: 800; letter-spacing: -.06em; }
+.brandMark { display: grid; place-items: center; width: 38px; height: 38px; border: 2px solid var(--ink); border-radius: 12px 12px 12px 4px; background: var(--yellow); font-size: 11px; letter-spacing: -.08em; }
+.brandDot { color: var(--teal); }
+.navLink { color: var(--ink); text-decoration: none; font-size: 13px; font-weight: 700; }
+.navLink span { color: var(--teal); font-size: 18px; margin-left: 7px; }
+.sun { position: absolute; width: 520px; height: 520px; top: -240px; right: -150px; border-radius: 50%; background: #f9dfb4; opacity: .7; }
+.hero { display: grid; grid-template-columns: 1fr .9fr; align-items: center; gap: 50px; padding: 75px 0 105px; position: relative; }
+.heroCopy { position: relative; z-index: 1; }
+.eyebrow { color: var(--teal); font-size: 11px; font-weight: 800; letter-spacing: .18em; line-height: 1.5; text-transform: uppercase; }
+.pulse { display: inline-block; width: 8px; height: 8px; margin-right: 8px; border-radius: 50%; background: var(--yellow); vertical-align: 1px; }
+.heroTitle, .sectionTitle { margin: 19px 0 23px; font-weight: 800; letter-spacing: -.08em; line-height: .94; }
+.heroTitle { font-size: clamp(64px, 9vw, 116px); }
+.sectionTitle { font-size: clamp(46px, 6vw, 76px); }
+.accent { color: var(--teal); font-style: normal; }
+.intro { max-width: 450px; color: var(--muted); font-size: 17px; line-height: 1.65; }
+.primaryButton { display: inline-flex; align-items: center; gap: 28px; margin-top: 30px; padding: 17px 22px 17px 25px; border: 2px solid var(--ink); border-radius: 13px 13px 13px 4px; background: var(--yellow); box-shadow: 0 5px 0 var(--ink); color: var(--ink); font-size: 14px; font-weight: 800; text-decoration: none; transition: transform .2s, box-shadow .2s; }
+.primaryButton:hover { transform: translateY(3px); box-shadow: 0 2px 0 var(--ink); }
+.primaryButton span { font-size: 23px; line-height: 12px; }
+.note { margin-top: 18px; color: #99a29c; font-size: 11px; }
+.heroVisual { position: relative; justify-self: center; width: min(100%, 440px); }
+.phoneFrame { width: 300px; margin: 0 auto; padding: 10px; border: 3px solid var(--ink); border-radius: 30px; background: var(--ink); box-shadow: 18px 20px 0 #c1d0bd; transform: rotate(4deg); }
+.phoneFrame img { display: block; width: 100%; height: 530px; border-radius: 21px; object-fit: cover; object-position: top; }
+.sticker { position: absolute; z-index: 1; top: 12px; right: 0; padding: 15px 18px; border: 2px solid var(--ink); border-radius: 50%; background: var(--yellow); color: var(--ink); font-size: 12px; font-weight: 800; line-height: 1.05; text-align: center; transform: rotate(11deg); }
+.routeCard { position: absolute; bottom: 28px; left: -12px; display: flex; align-items: center; gap: 10px; padding: 14px 17px; border: 2px solid var(--ink); border-radius: 13px; background: var(--paper); box-shadow: 4px 5px 0 var(--ink); font-size: 11px; font-weight: 700; text-transform: uppercase; }
+.routeCard span { color: var(--teal); font-size: 17px; } .routeCard strong { color: var(--teal); font-size: 19px; }
+.marquee { display: flex; justify-content: center; align-items: center; gap: 26px; padding: 19px 20px; background: var(--teal); color: var(--paper); font-size: 12px; font-weight: 800; letter-spacing: .15em; text-transform: uppercase; }
+.marquee b { color: var(--yellow); }
+.story { display: grid; grid-template-columns: 1fr 1fr; gap: 90px; align-items: end; padding: 125px 0 65px; }
+.storyText { max-width: 400px; margin: 0 0 8px; color: var(--muted); font-size: 16px; line-height: 1.75; }
+.screens { display: flex; align-items: start; gap: 24px; padding-bottom: 130px; }
+.screenCard { margin: 0; padding: 12px; border: 2px solid var(--ink); border-radius: 18px 18px 18px 5px; background: var(--paper); box-shadow: 7px 8px 0 var(--ink); }
+.screenCard img { display: block; width: 100%; border-radius: 10px; object-fit: cover; object-position: top; }
+.screenCardTall { width: 43%; transform: rotate(-2deg); } .screenCardShort { width: 53%; margin-top: 85px; transform: rotate(2deg); }
+.screenCardTall img { height: 450px; } .screenCardShort img { height: 335px; }
+.caption { display: flex; gap: 12px; align-items: center; padding: 15px 5px 3px; font-size: 13px; font-weight: 800; } .captionNumber { color: var(--teal); font-size: 11px; }
+.waitlist { display: grid; grid-template-columns: .85fr 1.15fr; gap: 65px; align-items: start; padding: 100px 0; }
+.waitlistIntro { padding-top: 50px; } .waitlistIntro > p:last-child { max-width: 330px; color: var(--muted); font-size: 16px; line-height: 1.7; }
+.formShell { min-height: 500px; overflow: hidden; border: 2px solid var(--ink); border-radius: 20px 20px 20px 6px; background: var(--paper); box-shadow: 8px 9px 0 var(--ink); }
+.formShell iframe { display: block; width: 100%; min-height: 2483px; border: 0; }
+.footer { display: flex; justify-content: space-between; align-items: center; padding: 30px 0 42px; border-top: 1px solid #d8d8c9; } .footer p { color: var(--muted); font-size: 11px; }
+@media (max-width: 760px) { .nav, .hero, .story, .screens, .waitlist, .footer { width: min(100% - 32px, 560px); } .nav { padding: 20px 0; } .hero { grid-template-columns: 1fr; gap: 60px; padding: 65px 0 80px; } .heroTitle { font-size: clamp(61px, 18vw, 100px); } .heroVisual { width: 90%; } .phoneFrame { width: 250px; } .phoneFrame img { height: 445px; } .routeCard { left: -10px; bottom: 18px; font-size: 9px; } .sticker { right: -5px; } .marquee { gap: 13px; font-size: 9px; white-space: nowrap; overflow: hidden; } .story, .waitlist { grid-template-columns: 1fr; gap: 18px; padding: 85px 0 45px; } .storyText { margin-top: 4px; } .screens { display: block; padding: 40px 0 100px; } .screenCardTall, .screenCardShort { width: 85%; } .screenCardShort { margin: 65px 0 0 auto; } .waitlistIntro { padding-top: 0; } .formShell { margin-top: 25px; } .footer { display: block; } .footer p { margin-top: 18px; } }
